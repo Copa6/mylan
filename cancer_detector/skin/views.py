@@ -86,9 +86,9 @@ def create_directory():
 
     """
     try:
-        os.makedirs(os.path.join(settings.MEDIA_ROOT, time.strftime('skin_cancer\\')))
+        os.makedirs(os.path.join(settings.MEDIA_ROOT, 'skin_cancer/'))
     except OSError:
-        if os.path.exists(os.path.join(settings.MEDIA_ROOT, time.strftime('skin_cancer\\'))):
+        if os.path.exists(os.path.join(settings.MEDIA_ROOT, 'skin_cancer/')):
             pass
         else:
             raise
@@ -108,16 +108,18 @@ def index(request):
         if form.is_valid():
             newdoc = Document(docfile=request.FILES['docfile'])  # Create a new Document to store the file on database
             filename_to_process = SelectedFile(
-                filename='skin_cancer\\' + newdoc.docfile.name)
+                filename=os.path.join('skin_cancer/' + newdoc.docfile.name))
             newdoc.save()
             filename_to_process.save()
             relative_filepath = filename_to_process.filename  # store the filename for the session
 
             image_filepath = os.path.join(settings.MEDIA_ROOT, relative_filepath)
+            print(image_filepath)
             model = FRmodel
             encoding = img_to_encoding(image_filepath, model)
             average_enc = np.average(encoding)
             print(average_enc)
+
             cancer = True if average_enc > threshold else False
             return_object['document'] = image_filepath
             return_object['is_cancer'] = cancer
