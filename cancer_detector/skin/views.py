@@ -85,13 +85,16 @@ def create_directory():
     parameter type: Type of analysis chosen by the user
 
     """
-    try:
-        os.makedirs(os.path.join(settings.MEDIA_ROOT, 'skin_cancer/'))
-    except OSError:
-        if os.path.exists(os.path.join(settings.MEDIA_ROOT, 'skin_cancer/')):
-            pass
-        else:
-            raise
+    static_directory = os.path.join(settings.MEDIA_URL, 'skin_cancer/')
+    print(static_directory)
+    if not os.path.exists(static_directory):
+        try:
+            os.makedirs()
+        except OSError:
+            if os.path.exists(os.path.join(settings.MEDIA_URL, 'skin_cancer/')):
+                pass
+            else:
+                raise
 
 
 
@@ -107,13 +110,17 @@ def index(request):
         form = forms.DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             newdoc = Document(docfile=request.FILES['docfile'])  # Create a new Document to store the file on database
+            print(newdoc)
+            print(newdoc.docfile)
+            print(newdoc.docfile.name)
             filename_to_process = SelectedFile(
                 filename=os.path.join('skin_cancer/' + newdoc.docfile.name))
             newdoc.save()
             filename_to_process.save()
             relative_filepath = filename_to_process.filename  # store the filename for the session
 
-            image_filepath = os.path.join(settings.MEDIA_ROOT, relative_filepath)
+
+            image_filepath = os.path.join(settings.MEDIA_URL, relative_filepath)
             print(image_filepath)
             model = FRmodel
             encoding = img_to_encoding(image_filepath, model)

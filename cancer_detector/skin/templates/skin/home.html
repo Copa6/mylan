@@ -16,36 +16,39 @@
     </style>
 </head>
 <body>
-<div class="container" style="width:80%">
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-          <!-- Upload form. Note enctype attribute! -->
-          <form action="{% url 'skin:index' %}" method="post" enctype="multipart/form-data">
-             {% csrf_token %}
-             <p>{{ form.non_field_errors }}</p>
-             <p>{{ form.docfile.label_tag }}</p>
-             <p>
-                 {{ form.docfile.errors }}
-                 {{ form.docfile }}
-             </p>
-             <button id="upload" type="submit" class="btn color2 pull-left" value="Upload" onclick="now_analyze(this)">
-                Analyze <i class="icon-arrow-right icon-white"></i>
-             </button><br /> <br />
-             <!--input type="submit" value="Upload" onclick="now_analyze(this)" style="background: linear-gradient(to bottom, white 0%, orange 100%); color: #020B2D; font-size: 1.0em; border-radius: 32px; box-shadow: 0px 1px 1px 0px #cccccc inset; text-shadow: 0px 1px 0px white;"/-->
-             </p>
-          </form><br><br>
-        {% if document %}
-            <img src="{{ document }}" alt="" type="image/png" height="150px" width="150px" />
-            {% if is_cancer %}
-            <p>This looks cancerous. Please visit your doctor and have this reviewed</p>
-            {% else %}
-            <p> There is no need to worry. This doesn't look cancerous.</p>
-            {% endif %}
-            <p>Encoding is {{ encoding }}</p>
-        </div>
 
-        {% endif %}
+    {% load staticfiles %}
+    <div class="container" style="width:80%">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+              <!-- Upload form. Note enctype attribute! -->
+              <form action="{% url 'skin:index' %}" method="post" enctype="multipart/form-data">
+                 {% csrf_token %}
+                 <p>{{ form.non_field_errors }}</p>
+                 <p>{{ form.docfile.label_tag }}</p>
+                 <p>
+                     {{ form.docfile.errors }}
+                     {{ form.docfile }}
+                 </p>
+                 <button id="upload" type="submit" class="btn color2 pull-left" value="Upload" onclick="now_analyze(this)">
+                    Analyze <i class="icon-arrow-right icon-white"></i>
+                 </button><br /> <br />
+                 <!--input type="submit" value="Upload" onclick="now_analyze(this)" style="background: linear-gradient(to bottom, white 0%, orange 100%); color: #020B2D; font-size: 1.0em; border-radius: 32px; box-shadow: 0px 1px 1px 0px #cccccc inset; text-shadow: 0px 1px 0px white;"/-->
+                 </p>
+              </form><br><br>
+            {% if document %}
+                <p>
+                    <img src="{{ document }}" alt="" type="image/jpg" height="200px" width="200px"/></p>
+                {% if is_cancer %}
+                <p>This looks cancerous. Please visit your doctor and have this reviewed</p>
+                {% else %}
+                <p> There is no need to worry. This doesn't look cancerous.</p>
+                {% endif %}
+                <p>Encoding is {{ encoding }}</p>
+            </div>
+
+            {% endif %}
+        </div>
     </div>
-</div>
 </body>
 </html>
