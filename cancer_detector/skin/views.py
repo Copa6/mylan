@@ -25,6 +25,9 @@ K.set_image_data_format('channels_first')
 import cv2
 import os
 import numpy as np
+import io
+import base64
+from imageio import imread
 from numpy import genfromtxt
 import pandas as pd
 import tensorflow as tf
@@ -97,6 +100,17 @@ def create_directory():
                 raise
 
 
+def detect_cancer(relative_filepath):
+    image_filepath_to_display = os.path.join(settings.MEDIA_URL, relative_filepath)
+    image_filepath_to_analyze = os.path.join(settings.MEDIA_ROOT, relative_filepath)
+
+    model = FRmodel
+    encoding = img_to_encoding(image_filepath_to_analyze, model)
+    average_enc = np.average(encoding)
+    print(average_enc)
+    cancer = True if average_enc > threshold else False
+    return cancer
+
 
 @csrf_exempt
 def index(request):
@@ -118,17 +132,8 @@ def index(request):
             newdoc.save()
             filename_to_process.save()
             relative_filepath = filename_to_process.filename  # store the filename for the session
-
-
-            image_filepath_to_display = os.path.join(settings.MEDIA_URL, relative_filepath)
-            image_filepath_to_analyze = os.path.join(settings.MEDIA_ROOT, relative_filepath)
-
-            model = FRmodel
-            encoding = img_to_encoding(image_filepath_to_analyze, model)
-            average_enc = np.average(encoding)
-            print(average_enc)
-
-            cancer = True if average_enc > threshold else False
+            cancer = detect_cancer(relative_filepath)
+            
             return_object['document'] = image_filepath_to_display
             return_object['is_cancer'] = cancer
             return_object['encoding'] = average_enc
@@ -137,3 +142,28 @@ def index(request):
         print("Model loaded in view")
         create_directory()
     return render(request, 'skin/home.html', context=return_object)
+
+
+@csrf_exempt
+def analyze_image(request):
+    try:
+        if request.method == 'POST':
+            request_data = json.loads(request.body)
+            encoded_image = request_data.get('image', None)
+            if encoded_image is not None:
+                img = imread(io.BytesIO(base64.b64decode(encoded_image)))
+                cv2_img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+                image_file = os.path.join('skin_cancer' + settings.PATH_TYPE + 'android_request_' + time.strftime('%H%M%S') + '.jpg')
+                absolute_filepath = os.path.join(settings.MEDIA_ROOT, image_file)
+                # print(absolute_filepath)
+                cv2.imwrite(absolute_filepath, cv2_img)
+                cancer = detect_cancer(image_file)
+                return JsonResponse({'detection': cancer}, status=200)
+            else:
+                print('no image')
+                return JsonResponse({'error': 'No image file found.'}, status=404)
+
+
+    except Exception as e:
+        print(e)
+        return JsonResponse({'error': str(e)}, status=404)
