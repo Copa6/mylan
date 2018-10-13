@@ -1,10 +1,11 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 
 
 class Document(models.Model):
-    docfile = models.FileField(upload_to='skin_cancer/')
+    docfile = models.FileField(upload_to='skin_cancer' + settings.PATH_TYPE)
 
     def __str__(self):
         return self.docfile.name

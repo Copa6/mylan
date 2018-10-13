@@ -85,13 +85,13 @@ def create_directory():
     parameter type: Type of analysis chosen by the user
 
     """
-    static_directory = os.path.join(settings.MEDIA_ROOT, 'skin_cancer/')
+    static_directory = os.path.join(settings.MEDIA_ROOT, 'skin_cancer' + settings.PATH_TYPE)
     print(static_directory)
     if not os.path.exists(static_directory):
         try:
             os.makedirs(static_directory)
         except OSError:
-            if os.path.exists(os.path.join(settings.MEDIA_ROOT, 'skin_cancer/')):
+            if os.path.exists(os.path.join(settings.MEDIA_ROOT, 'skin_cancer' + settings.PATH_TYPE)):
                 pass
             else:
                 raise
@@ -114,7 +114,7 @@ def index(request):
             print(newdoc.docfile)
             print(newdoc.docfile.name)
             filename_to_process = SelectedFile(
-                filename=os.path.join('skin_cancer/' + newdoc.docfile.name))
+                filename=os.path.join('skin_cancer' + settings.PATH_TYPE + newdoc.docfile.name))
             newdoc.save()
             filename_to_process.save()
             relative_filepath = filename_to_process.filename  # store the filename for the session

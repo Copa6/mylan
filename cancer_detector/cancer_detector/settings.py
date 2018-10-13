@@ -128,3 +128,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = '/media/'
+
+if os.path.isdir('..media\\'):
+    PATH_TYPE = '\\'
+else:
+    PATH_TYPE = '/'
