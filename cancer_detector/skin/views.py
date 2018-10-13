@@ -85,13 +85,13 @@ def create_directory():
     parameter type: Type of analysis chosen by the user
 
     """
-    static_directory = os.path.join(settings.MEDIA_URL, 'skin_cancer/')
+    static_directory = os.path.join(settings.MEDIA_ROOT, 'skin_cancer/')
     print(static_directory)
     if not os.path.exists(static_directory):
         try:
-            os.makedirs()
+            os.makedirs(static_directory)
         except OSError:
-            if os.path.exists(os.path.join(settings.MEDIA_URL, 'skin_cancer/')):
+            if os.path.exists(os.path.join(settings.MEDIA_ROOT, 'skin_cancer/')):
                 pass
             else:
                 raise
@@ -120,15 +120,16 @@ def index(request):
             relative_filepath = filename_to_process.filename  # store the filename for the session
 
 
-            image_filepath = os.path.join(settings.MEDIA_URL, relative_filepath)
-            print(image_filepath)
+            image_filepath_to_display = os.path.join(settings.MEDIA_URL, relative_filepath)
+            image_filepath_to_analyze = os.path.join(settings.MEDIA_ROOT, relative_filepath)
+
             model = FRmodel
-            encoding = img_to_encoding(image_filepath, model)
+            encoding = img_to_encoding(image_filepath_to_analyze, model)
             average_enc = np.average(encoding)
             print(average_enc)
 
             cancer = True if average_enc > threshold else False
-            return_object['document'] = image_filepath
+            return_object['document'] = image_filepath_to_display
             return_object['is_cancer'] = cancer
             return_object['encoding'] = average_enc
     else:

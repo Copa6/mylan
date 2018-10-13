@@ -16,12 +16,15 @@
       }
     </style>
 </head>
-<body>
+<body style="background:#fafafa">
 
     {% load staticfiles %}
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4">
+                <div>
+                    <img src="{% static 'logo.jpeg' %}" height="50%" width="75%"/>
+                </div>
               <!-- Upload form. Note enctype attribute! -->
               <form action="{% url 'skin:index' %}" method="post" enctype="multipart/form-data">
                  {% csrf_token %}
@@ -33,12 +36,12 @@
                  </p>
                  <br>
                  <br>
-                 <button id="upload" type="submit" class="btn color2 pull-left" value="Upload" onclick="now_analyze(this)">
+                 <button id="upload" type="submit" class="btn btn-outline-secondary" value="Upload" onclick="now_analyze(this)">
                     Analyze <i class="icon-arrow-right icon-white"></i>
                  </button><br /> <br />
                  <!--input type="submit" value="Upload" onclick="now_analyze(this)" style="background: linear-gradient(to bottom, white 0%, orange 100%); color: #020B2D; font-size: 1.0em; border-radius: 32px; box-shadow: 0px 1px 1px 0px #cccccc inset; text-shadow: 0px 1px 0px white;"/-->
                  </p>
-              </form><br>
+              </form>
             {% if document %}
                 <p>
                     <img src="{{ document }}" alt="" type="image/jpg" height="200px" width="200px"/></p>
