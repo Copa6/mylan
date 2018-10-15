@@ -152,6 +152,7 @@ def analyze_image(request):
     try:
         if request.method == 'POST':
             request_data = json.loads(request.body)
+            print(request_data)
             encoded_image = request_data.get('image', None)
             if encoded_image is not None:
                 img = imread(io.BytesIO(base64.b64decode(encoded_image)))
@@ -161,7 +162,14 @@ def analyze_image(request):
                 # print(absolute_filepath)
                 cv2.imwrite(absolute_filepath, cv2_img)
                 cancer = detect_cancer(image_file)
-                return JsonResponse({'detection': cancer}, status=200)
+
+                image_filepath_to_display = os.path.join(settings.MEDIA_URL, image_file)
+
+                return_object['document'] = image_filepath_to_display
+                return_object['is_cancer'] = cancer
+                return_object['encoding'] = None
+
+                render(request, 'skin/home.html', context=return_object)
             else:
                 print('no image')
                 return JsonResponse({'error': 'No image file found.'}, status=404)

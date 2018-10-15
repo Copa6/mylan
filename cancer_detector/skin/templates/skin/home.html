@@ -44,13 +44,12 @@
                  </p>
               </form>
             {% if document %}
-                <p>
-                    <img src="{{ document }}" alt="" type="image/jpg" height="200px" width="200px"/></p>
                 {% if is_cancer %}
                 <p>This looks cancerous. Please visit your doctor and have this reviewed</p>
                 {% else %}
                 <p> There is no need to worry. This doesn't look cancerous.</p>
                 {% endif %}
+                    <p><img src="{{ document }}" alt="" type="image/jpg" height="200px" width="200px"/></p>
             </div>
 
             {% endif %}
