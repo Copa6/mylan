@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "413964181034",
+    "firebase_url": "https://skinsense-5d5ee.firebaseio.com",
+    "project_id": "skinsense-5d5ee",
+    "storage_bucket": "skinsense-5d5ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413964181034:android:30d4048e6110ef53",
+        "android_client_info": {
+          "package_name": "com.example.analyttica.skinsense"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413964181034-bcqkeefos6rapsq4t7j2bvos32p8i0km.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.analyttica.skinsense",
+            "certificate_hash": "0b1f5d63f145674fedd512bb8217bb8020f3e24b"
+          }
+        },
+        {
+          "client_id": "413964181034-iv2940vckm32kthh9300b0ck1phj8s1s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDULFpk6MyYmeWpM--EJh8QHONVFnrFqa4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413964181034-iv2940vckm32kthh9300b0ck1phj8s1s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
