@@ -166,7 +166,7 @@ def analyze_image(request):
 
                 image_filepath_to_display = os.path.join(settings.MEDIA_URL, image_file)
 
-                JsonResponse({'cancer': cancer}, status=200)
+                return JsonResponse({'cancer': cancer}, status=200)
             else:
                 print('no image')
                 return JsonResponse({'error': 'No image file found.'}, status=404)

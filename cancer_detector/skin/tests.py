@@ -20,3 +20,4 @@ post_data = {'image': encoded_string}
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 response = requests.post(url, json=post_data)
 print(response.status_code)
+print(response.json())
