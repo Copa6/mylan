@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from . import forms
 from .models import Document, SelectedFile
+import re
 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
@@ -132,11 +133,13 @@ def index(request):
             newdoc.save()
             filename_to_process.save()
             relative_filepath = filename_to_process.filename  # store the filename for the session
+            # if (r)
             cancer = detect_cancer(relative_filepath)
-            
+            image_filepath_to_display = os.path.join(settings.MEDIA_URL, relative_filepath)
+
             return_object['document'] = image_filepath_to_display
             return_object['is_cancer'] = cancer
-            return_object['encoding'] = average_enc
+            return_object['encoding'] = None
     else:
         # model = FRmodel
         print("Model loaded in view")
@@ -148,7 +151,9 @@ def index(request):
 def analyze_image(request):
     try:
         if request.method == 'POST':
+            return_object = {}
             request_data = json.loads(request.body)
+            # print(request_data)
             encoded_image = request_data.get('image', None)
             if encoded_image is not None:
                 img = imread(io.BytesIO(base64.b64decode(encoded_image)))
@@ -158,7 +163,10 @@ def analyze_image(request):
                 # print(absolute_filepath)
                 cv2.imwrite(absolute_filepath, cv2_img)
                 cancer = detect_cancer(image_file)
-                return JsonResponse({'detection': cancer}, status=200)
+
+                image_filepath_to_display = os.path.join(settings.MEDIA_URL, image_file)
+
+                return JsonResponse({'cancer': cancer}, status=200)
             else:
                 print('no image')
                 return JsonResponse({'error': 'No image file found.'}, status=404)
